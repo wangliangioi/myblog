@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="jQuery,angular," />
+  <meta name="keywords" content="angular," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="angular的过滤器 之前经常用到filter，有时候会出问题，现在总结一下，以备不时之需。">
-<meta name="keywords" content="jQuery,angular">
+<meta name="description" content="angular的过滤器 业务开发中经常会用到过滤器，现在在这里总结一下angular过滤器的用法，angular的过滤器是非常简单的，分为内置和自定义两种，下面分别介绍这两种过滤器的用法。">
+<meta name="keywords" content="angular">
 <meta property="og:type" content="article">
 <meta property="og:title" content="过滤器">
 <meta property="og:url" content="http://yoursite.com/2018/06/28/过滤器/index.html">
 <meta property="og:site_name" content="AaronWang的个人博客">
-<meta property="og:description" content="angular的过滤器 之前经常用到filter，有时候会出问题，现在总结一下，以备不时之需。">
+<meta property="og:description" content="angular的过滤器 业务开发中经常会用到过滤器，现在在这里总结一下angular过滤器的用法，angular的过滤器是非常简单的，分为内置和自定义两种，下面分别介绍这两种过滤器的用法。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-10T01:57:47.897Z">
+<meta property="og:updated_time" content="2018-07-20T07:03:39.644Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="过滤器">
-<meta name="twitter:description" content="angular的过滤器 之前经常用到filter，有时候会出问题，现在总结一下，以备不时之需。">
+<meta name="twitter:description" content="angular的过滤器 业务开发中经常会用到过滤器，现在在这里总结一下angular过滤器的用法，angular的过滤器是非常简单的，分为内置和自定义两种，下面分别介绍这两种过滤器的用法。">
 
 
 
@@ -330,9 +330,102 @@
       
 
       
-        <h2 id="angular的过滤器"><a href="#angular的过滤器" class="headerlink" title="angular的过滤器"></a>angular的过滤器</h2><p> 之前经常用到filter，有时候会出问题，现在总结一下，以备不时之需。</p>
+        <h2 id="angular的过滤器"><a href="#angular的过滤器" class="headerlink" title="angular的过滤器"></a>angular的过滤器</h2><p> 业务开发中经常会用到过滤器，现在在这里总结一下angular过滤器的用法，angular的过滤器是非常简单的，分为内置和自定义两种，下面分别介绍这两种过滤器的用法。</p>
 <a id="more"></a>
-<h3 id="angular"><a href="#angular" class="headerlink" title="angular"></a>angular</h3>
+<h3 id="angular内置的过滤器"><a href="#angular内置的过滤器" class="headerlink" title="angular内置的过滤器"></a>angular内置的过滤器</h3><p>angular有9种内置的过滤器</p>
+<ol>
+<li><p>currency (货币处理)</p>
+<p>使用currency可以为数字加上货币符号，默认为美元符号，也可以传入所需的符号，例如传入人民币</p>
+<pre><code>{{num | currency: '￥'}}
+</code></pre></li>
+<li><p>date (时间格式化)</p>
+<p>时间格式化是我用的比较多的一种，{ {date | date : ‘yyyy-MM-dd hh:mm:ss EEEE’} }，y M d h m s E 分别表示 年 月 日 时 分 秒 星期，你可以随意组合他们。比如{ {date | date : ‘yyyy年MM月dd日 hh:mm:ss’} }，{ {date | date : ‘yyyy年MM月dd日’} }，{ {date | date : ‘hh:mm:ss’} }，只要有关键参数就可以随意组合。</p>
+</li>
+</ol>
+<ol start="3">
+<li><p>filter (匹配字符串)</p>
+<p>这个名叫filter的filter很容易让人搞混，这个filter可以用来处理一个数组，过滤出含有某个字符串的元素，返回一个过滤后的数组。处理的数组可以是字符串数组，可也以是对象数组。如果是对象数组，可以匹配属性的值。</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$scope.items = [</span><br><span class="line">	&#123;name:&apos;小明&apos;,age:3,sex:&apos;男&apos;,mobile:123456&#125;,</span><br><span class="line">    &#123;name:&apos;张三&apos;,age:4,sex:&apos;男&apos;&#125;,</span><br><span class="line">    &#123;name:&apos;李四&apos;,age:4,sex:&apos;女&apos;,mobile:654321&#125;,</span><br><span class="line">    &#123;name:&apos;王五&apos;,age:6,sex:&apos;男&apos;&#125;,</span><br><span class="line">    &#123;name:&apos;赵六&apos;,age:5,sex:&apos;女&apos;,mobile:098765432&#125;</span><br><span class="line">];</span><br><span class="line">$scope.func = function(e)&#123;return e.age&gt;4;&#125;</span><br><span class="line">&lt;tr ng-repeat=&quot;item in items | filter:&apos;小明&apos;&quot;&gt;&lt;/tr&gt;//匹配属性值里有小明这个字段的元素</span><br><span class="line">&lt;tr ng-repeat=&quot;item in items | filter:&apos;3&apos;&quot;&gt;&lt;/tr&gt;//匹配属性值里有3这个字段的元素</span><br><span class="line">&lt;tr ng-repeat=&quot;item in items | filter:&#123;name:&apos;小明&apos;&#125;&quot;&gt;&lt;/tr&gt;//过滤的参数是对象，匹配name属性里有小明这个字段的元素</span><br><span class="line">&lt;tr ng-repeat=&quot;item in items | filter:func&quot;&gt;&lt;/tr&gt;//过滤的参数是函数，匹配age&gt;4的元素</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>json（格式化json对象）</p>
+<p>json过滤器可以将js对象格式化为json字符串，我貌似从来没用过这个功能，我们从后台取回的数据一般都是json格式的，数据处理也都放在js里，官网上说它可以用来进行调试，好像也就只有这个作用了。</p>
+<pre><code>&lt;div ng-bind=&quot;item | json&quot;&gt;&lt;/div&gt;
+</code></pre></li>
+<li><p>limitTo (限制数组长度或者字符串长度)</p>
+<p>limitTo用来截取数组或者字符串，接收一个参数用来指定截取的长度，如果参数是负值，则从数组尾部开始截取。这个过滤器只能从头或者尾开始截取，感觉有点鸡肋。</p>
+<pre><code>&lt;tr ng-repeat=&quot;item in items | limitTo: 3&quot;&gt;&lt;/tr&gt;//截取数组的前三个元素
+</code></pre></li>
+<li><p>lowercase（小写）</p>
+<p>把数据转化为全部小写。同样是很鸡肋的一个filter，没有参数，只能把整个字符串变为小写。</p>
+<pre><code>&lt;div ng-bind=&quot;item | lowercase&quot;&gt;&lt;/div&gt;
+</code></pre></li>
+<li><p>uppercase（大写）</p>
+<p>把数据转化为全部大写。同样是很鸡肋的一个filter，没有参数，只能把整个字符串变为大写。</p>
+<pre><code>&lt;div ng-bind=&quot;item | uppercase&quot;&gt;&lt;/div&gt;
+</code></pre></li>
+<li><p>number（格式化数字）</p>
+<p>number过滤器可以为一个数字加上千位分隔，例如123,456,789。可接受一个参数，指定float类型保留几位小数。</p>
+<pre><code>&lt;span&gt;{{num | number:2}}&lt;/span&gt;//保留两位小数
+</code></pre></li>
+<li><p>orderBy（排序）</p>
+<p>orderBy过滤器可以将一个数组中的元素按照某个字段属性重新排序，可以接受一个参数来指定排序规则。参数可以是一个字符串，表示以该属性名称进行排序。可以是一个函数，函数会遍历待排序的数组，并将返回的结果作为angular库函数中comparator的参数，进行比较排序。还可以是一个数组，表示依次按数组中的属性值进行排序（若按第一项比较的值相等，再按第二项比较）。还是拿上面的items举例：</p>
+<pre><code>&lt;tr ng-repeat=&quot;item in items | orderBy:&apos;age&apos;&quot;&gt;&lt;/tr&gt;//按照age的属性值进行排序，若是-age，则倒序。
+&lt;tr ng-repeat=&quot;item in items | orderBy: orderFunc&quot;&gt;&lt;/tr&gt;//按照函数的返回值进行排序
+&lt;tr ng-repeat=&quot;item in items | orderBy: [&apos;age&apos;,&apos;name&apos;]&quot;&gt;&lt;/tr&gt;//按照age的属性值进行排序，如果age相同，按照name进行排序
+</code></pre></li>
+</ol>
+<p>内置的过滤器就是这些，angular内置的过滤器并不是万能的，实际上好多都基本用不上，我们日常开发中用的最多还是自定义的过滤器。</p>
+<h3 id="angular的自定义过滤器"><a href="#angular的自定义过滤器" class="headerlink" title="angular的自定义过滤器"></a>angular的自定义过滤器</h3><p>自定义过滤器的结构</p>
+<pre><code>{{带过滤数据 | 过滤器名：参数1：参数2：参数3.....}}    
+
+app.filter(&apos;过滤器名&apos;, function () {
+    return function (待过滤数据, 参数1：参数2：参数3.....) {
+        //过滤操作
+        return  已过滤数据;
+    }
+});
+</code></pre><p>下面举一个具体的栗子</p>
+<p>  reverse是过滤器的名字，后面跟的是过滤器的方法声明，子啊方法中返回一个方法：</p>
+<pre><code>{{ name | reverse:true }}
+
+app.filter(&quot;reverse&quot;,function(){
+    return function(input,uppercase){
+      var out = &quot;&quot;;
+      for(var i=0 ; i&lt;input.length; i++){
+        out = input.charAt(i)+out;
+      }
+      if(uppercase){
+        out = out.toUpperCase();
+      }
+      return out;
+    }
+});
+</code></pre><p>  内部返回的方法包含了两个参数，一个是输入的值，就是我们过滤器接受的值。input就是其中name的值<br>  后面的参数是可选的，这里接受uppercase这个bool值，判断是否要大小写切换。</p>
+<h3 id="filter的使用方法"><a href="#filter的使用方法" class="headerlink" title="filter的使用方法"></a>filter的使用方法</h3><ol>
+<li><p>在模板中使用filter</p>
+<p>我们可以直接在{ { } }中使用filter，在表达式后面用 | 分割：</p>
+<pre><code>{{ items | filter }}
+</code></pre><p>filter也可以多个连用，上一个filter的输出将作为下一个filter的输入：</p>
+<pre><code>{{ items | filter1 | filter2 | ... }}
+</code></pre><p>filter可以接受参数，多个参数用:分割：</p>
+<pre><code>{{ items | filter:argument1:argument2:... }}
+</code></pre><p>最常用的还是在指令中使用filter，先对数组进行过滤处理，然后在循环输出：</p>
+<pre><code>&lt;div ng-repeat=&quot;item in items | filter&quot;&gt;&lt;/div&gt;
+</code></pre></li>
+<li><p>在controller和servie中使用filter</p>
+<p>在controller中使用filter，首先要在controller中注入filter，例如上面的reverse：</p>
+<pre><code>app.controller(&apos;test&apos;,function($scope,reverse){
+  $scope.name = reverse(&apos;XiaoMing&apos;,true);
+}
+</code></pre><p>当需要的filter比较多的时候，可以通过angular提供的$filter服务来调用所需的filter，只需要注入一个$filter就够了，使用方法如下：</p>
+<pre><code>app.controller(&apos;testC&apos;,function($scope,$filter){
+  $scope.name = $filter(&apos;reverse&apos;)(&apos;XiaoMing&apos;,true);
+  $scope.date = $filter(&apos;date&apos;)(new Date(),&quot;yyyy-MM-dd hh:mm:ss EEEE&quot;);
+}
+</code></pre></li>
+</ol>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>以上就是关于angular中过滤器的一些基本用法，都非常的简单，但是不自己整理一遍还是挺容易忘的，整理的过程中会发现很多平时可能注意不到的细节。</p>
+
       
     </div>
     
@@ -348,8 +441,6 @@
     <footer class="post-footer">
       
         <div class="post-tags">
-          
-            <a href="/tags/jQuery/" rel="tag"># jQuery</a>
           
             <a href="/tags/angular/" rel="tag"># angular</a>
           
@@ -475,7 +566,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -508,7 +599,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#angular的过滤器"><span class="nav-number">1.</span> <span class="nav-text">angular的过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#angular"><span class="nav-number">1.1.</span> <span class="nav-text">angular</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#angular的过滤器"><span class="nav-number">1.</span> <span class="nav-text">angular的过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#angular内置的过滤器"><span class="nav-number">1.1.</span> <span class="nav-text">angular内置的过滤器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#angular的自定义过滤器"><span class="nav-number">1.2.</span> <span class="nav-text">angular的自定义过滤器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#filter的使用方法"><span class="nav-number">1.3.</span> <span class="nav-text">filter的使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">1.4.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
             
 
           </div>
